@@ -98,12 +98,12 @@ class _ProductList extends State<ProductList> {
           Expanded(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                if (constraints.maxWidth > 650) {
+                if (constraints.maxWidth > 1080) {
                   return GridView.builder(
                     itemCount: products.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, childAspectRatio: 2),
+                            crossAxisCount: 2, childAspectRatio: 1.75),
                     itemBuilder: ((context, index) {
                       final product = products[index];
                       return GestureDetector(
