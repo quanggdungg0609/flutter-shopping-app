@@ -40,7 +40,7 @@ class ProductCard extends StatelessWidget {
             Center(
               child: Image(
                 image: AssetImage(imageUrl),
-                height: 175,
+                height: 150,
               ),
             ),
           ],
