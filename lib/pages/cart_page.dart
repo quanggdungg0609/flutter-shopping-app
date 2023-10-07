@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shop_app/pages/global_variables.dart';
+import 'package:flutter_shop_app/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cart = context.watch<CartProvider>().cart;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Cart Page"),
@@ -26,7 +29,41 @@ class CartPage extends StatelessWidget {
                   Icons.delete,
                   color: Colors.red,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    barrierDismissible: true,
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Remove Product"),
+                        titleTextStyle: Theme.of(context).textTheme.titleMedium,
+                        content: const Text("Are you sure?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text(
+                              "No",
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                context
+                                    .read<CartProvider>()
+                                    .removeProduct(cartItem);
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text(
+                                "Yes",
+                                style: TextStyle(color: Colors.red),
+                              )),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
               title: Text(
                 cartItem["title"].toString(),

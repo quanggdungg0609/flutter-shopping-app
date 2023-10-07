@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shop_app/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Map<String, Object> product;
@@ -10,6 +12,24 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   int selectedSize = 0;
+  void onTap() {
+    if (selectedSize != 0) {
+      Provider.of<CartProvider>(context, listen: false).addProduct({
+        "id": widget.product["id"],
+        "title": widget.product["title"],
+        "price": widget.product["price"],
+        "imageUrl": widget.product["imageUrl"],
+        "company": widget.product["company"],
+        "size": selectedSize,
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Product added succesful!")));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Please select size !")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +48,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           const Spacer(flex: 1),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Image.asset((widget.product["imageUrl"] as String)),
+            child: Image.asset(
+              (widget.product["imageUrl"] as String),
+              height: 250,
+            ),
           ),
           const Spacer(flex: 2),
           Container(
@@ -77,8 +100,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.primary,
-                        minimumSize: const Size(double.infinity, 50)),
-                    onPressed: () {},
+                        fixedSize: const Size(350, 50)),
+                    onPressed: onTap,
                     child: const Text(
                       "Add to cart",
                       style: TextStyle(color: Colors.black, fontSize: 16),
